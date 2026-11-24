@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Pesanan{% endblock %}
+{% block content %}
+<h1>Ringkasan penjualan 📊</h1>
+<div class="stats">
+  <div class="stat pink"><span>Total pendapatan</span><b>{{ stats.omzet|rp }}</b></div>
+  <div class="stat mint"><span>Buku terjual</span><b>{{ stats.terjual }}</b></div>
+  <div class="stat sky"><span>Transaksi lunas</span><b>{{ stats.transaksi }}</b></div>
+  <div class="stat lemon"><span>Jumlah pembeli</span><b>{{ stats.pembeli }}</b></div>
+</div>
+<h2>Siapa saja yang checkout</h2>
+{% if orders %}
+<div class="table-wrap"><table>
+  <tr><th>Kode</th><th>Tanggal</th><th>Pembeli</th><th>No. HP</th><th>Buku</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.code }}</td><td>{{ o.created }}</td><td>{{ o.customer }}</td><td>{{ o.phone }}</td>
+    <td>{{ o.jumlah }}</td><td>{{ o.total|rp }}</td>
+    <td><span class="badge {{ o.status|lower }}">{{ o.status }}</span></td>
+    <td class="actions">
+      <a class="btn small ghost" href="{{ url_for('order_detail', id=o.id) }}">Detail</a>
+      <a class="btn small ghost" href="{{ url_for('struk', code=o.code) }}">Struk</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table></div>
+{% else %}<p class="empty">Belum ada yang checkout. Sabar ya, pembeli segera datang 🌈</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Kelola Buku{% endblock %}
+{% block content %}
+<div class="bar"><h1>Kelola buku 📚</h1><a class="btn" href="{{ url_for('book_form') }}">+ Tambah buku</a></div>
+{% if books %}
+<div class="table-wrap"><table>
+  <tr><th>Sampul</th><th>Judul</th><th>Penulis</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+  {% for b in books %}
+  <tr>
+    <td class="thumb">{% if b.cover %}<img src="{{ url_for('static', filename='uploads/' + b.cover) }}" alt="">{% else %}📕{% endif %}</td>
+    <td>{{ b.title }}</td><td>{{ b.author }}</td><td>{{ b.price|rp }}</td><td>{{ b.stock }}</td>
+    <td class="actions">
+      <a class="btn small ghost" href="{{ url_for('book_form', id=b.id) }}">Edit</a>
+      <form method="post" action="{{ url_for('book_delete', id=b.id) }}" onsubmit="return confirm('Hapus buku ini?')">
+        <button class="btn small danger">Hapus</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table></div>
+{% else %}<p class="empty">Rak masih kosong. Yuk tambah buku pertama! 📖</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if book else "Tambah" }} Buku{% endblock %}
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="panel form narrow">
+  <h1>{{ "Edit buku ✏️" if book else "Tambah buku baru ✨" }}</h1>
+  <label>Judul<input name="title" value="{{ book.title if book }}" required></label>
+  <label>Penulis<input name="author" value="{{ book.author if book }}" required></label>
+  <label>Harga (Rp)<input type="number" name="price" min="0" value="{{ book.price if book }}" required></label>
+  <label>Stok<input type="number" name="stock" min="0" value="{{ book.stock if book else 0 }}" required></label>
+  <label>Deskripsi<textarea name="description" rows="4">{{ book.description if book }}</textarea></label>
+  <label>Sampul buku (png/jpg/webp)
+    <input type="file" name="cover" accept="image/*">
+  </label>
+  {% if book and book.cover %}<img class="preview" src="{{ url_for('static', filename='uploads/' + book.cover) }}" alt="Sampul saat ini">{% endif %}
+  <button class="btn">Simpan buku</button>
+  <a class="btn ghost" href="{{ url_for('admin_books') }}">Batal</a>
+</form>
+{% endblock %}

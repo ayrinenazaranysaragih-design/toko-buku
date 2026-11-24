@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Halo, kutu buku! 👋</h1>
+    <p>Pilih bacaan favoritmu hari ini. Ada cerita seru, resep manis, dan banyak lagi.</p>
+    <form class="search" method="get">
+      <input name="q" value="{{ q }}" placeholder="Cari judul atau penulis...">
+      <button class="btn">Cari</button>
+    </form>
+  </div>
+  <div class="hero-art">📖<span>✨</span></div>
+</section>
+
+{% if books %}
+<div class="grid">
+  {% for b in books %}
+  <a class="card" href="{{ url_for('detail', id=b.id) }}">
+    <div class="cover">
+      {% if b.cover %}<img src="{{ url_for('static', filename='uploads/' + b.cover) }}" alt="Sampul {{ b.title }}">
+      {% else %}<span>📕</span>{% endif %}
+      {% if b.stock == 0 %}<em class="tag">Habis</em>{% endif %}
+    </div>
+    <h3>{{ b.title }}</h3>
+    <p class="muted">{{ b.author }}</p>
+    <strong class="price">{{ b.price|rp }}</strong>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">Belum ada buku yang cocok. Coba kata kunci lain ya 🔍</p>
+{% endif %}
+{% endblock %}

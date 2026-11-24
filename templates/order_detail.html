@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Pesanan {{ o.code }}{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('dashboard') }}">← Kembali ke daftar pesanan</a>
+<h1>Pesanan {{ o.code }}</h1>
+<div class="cart-layout">
+  <div class="table-wrap"><table>
+    <tr><th>Buku</th><th>Harga</th><th>Jml</th><th>Subtotal</th></tr>
+    {% for l in lines %}<tr><td>{{ l.title }}</td><td>{{ l.price|rp }}</td><td>{{ l.qty }}</td><td>{{ (l.qty*l.price)|rp }}</td></tr>{% endfor %}
+    <tr class="sum"><td colspan="3">Total</td><td><b>{{ o.total|rp }}</b></td></tr>
+  </table></div>
+  <form method="post" class="panel form">
+    <h2>Data pembeli</h2>
+    <label>Nama<input name="customer" value="{{ o.customer }}" required></label>
+    <label>Nomor HP<input name="phone" value="{{ o.phone }}" required></label>
+    <label>Alamat<textarea name="address" rows="3" required>{{ o.address }}</textarea></label>
+    <label>Status
+      <select name="status">{% for st in ["Lunas", "Dibatalkan"] %}<option {{ "selected" if o.status == st }}>{{ st }}</option>{% endfor %}</select>
+    </label>
+    <p class="muted">Status "Dibatalkan" mengembalikan stok dan tidak dihitung ke pendapatan.</p>
+    <button class="btn">Simpan perubahan</button>
+    <a class="btn ghost" href="{{ url_for('struk', code=o.code) }}">Lihat struk</a>
+  </form>
+</div>
+<form method="post" action="{{ url_for('order_delete', id=o.id) }}" onsubmit="return confirm('Hapus pesanan ini?')" style="margin-top:18px">
+  <button class="btn small danger">Hapus pesanan</button>
+</form>
+{% endblock %}

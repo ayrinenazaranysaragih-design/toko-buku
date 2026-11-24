@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Keranjang{% endblock %}
+{% block content %}
+<h1>Keranjang belanja 🛒</h1>
+{% if items %}
+<div class="cart-layout">
+  <div class="table-wrap"><table>
+    <tr><th>Buku</th><th>Harga</th><th>Jml</th><th>Subtotal</th><th></th></tr>
+    {% for i in items %}
+    <tr>
+      <td><b>{{ i.book.title }}</b><br><span class="muted">{{ i.book.author }}</span></td>
+      <td>{{ i.book.price|rp }}</td><td>{{ i.qty }}</td><td>{{ i.sub|rp }}</td>
+      <td><form method="post" action="{{ url_for('cart_remove', id=i.book.id) }}"><button class="btn small danger">Hapus</button></form></td>
+    </tr>
+    {% endfor %}
+    <tr class="sum"><td colspan="3">Total</td><td colspan="2"><b>{{ total|rp }}</b></td></tr>
+  </table></div>
+  <form method="post" action="{{ url_for('checkout') }}" class="panel form">
+    <h2>Data pembeli</h2>
+    <label>Nama lengkap<input name="customer" required></label>
+    <label>Nomor HP<input name="phone" required inputmode="tel"></label>
+    <label>Alamat pengiriman<textarea name="address" rows="3" required></textarea></label>
+    <button class="btn">Checkout &amp; lihat struk ✨</button>
+  </form>
+</div>
+{% else %}
+<p class="empty">Keranjangmu masih kosong. <a href="{{ url_for('index') }}">Cari buku dulu yuk</a> 📚</p>
+{% endif %}
+{% endblock %}

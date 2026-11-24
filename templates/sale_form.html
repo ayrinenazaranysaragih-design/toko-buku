@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Edit Penjualan{% endblock %}
+{% block content %}
+<form method="post" class="panel form narrow">
+  <h1>Edit penjualan ✏️</h1>
+  <p class="muted">{{ s.code }} · {{ s.title }}</p>
+  <label>Nama pembeli<input name="customer" value="{{ s.customer }}" required></label>
+  <label>Jumlah<input type="number" name="qty" value="{{ s.qty }}" min="1" required></label>
+  <label>Status
+    <select name="status">
+      {% for st in ["Lunas", "Dibatalkan"] %}
+      <option {{ "selected" if s.status == st }}>{{ st }}</option>{% endfor %}
+    </select>
+  </label>
+  <p class="muted">Stok otomatis menyesuaikan. Status "Dibatalkan" mengembalikan stok dan tidak dihitung ke pendapatan.</p>
+  <button class="btn">Simpan perubahan</button>
+  <a class="btn ghost" href="{{ url_for('dashboard') }}">Batal</a>
+</form>
+{% endblock %}

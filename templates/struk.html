@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Struk {{ o.code }}{% endblock %}
+{% block content %}
+<div class="receipt">
+  <h2>📚 Toko Buku Pelangi</h2>
+  <p class="center muted">Struk transaksi · terima kasih!</p>
+  <hr>
+  <div class="row"><span>No. struk</span><b>{{ o.code }}</b></div>
+  <div class="row"><span>Tanggal</span><b>{{ o.created }}</b></div>
+  <div class="row"><span>Pembeli</span><b>{{ o.customer }}</b></div>
+  <div class="row"><span>No. HP</span><b>{{ o.phone }}</b></div>
+  <div class="row"><span>Status</span><b>{{ o.status }}</b></div>
+  <p class="muted">Kirim ke: {{ o.address }}</p>
+  <hr>
+  {% for l in lines %}
+  <p class="line"><b>{{ l.title }}</b></p>
+  <div class="row"><span>{{ l.qty }} x {{ l.price|rp }}</span><b>{{ (l.qty * l.price)|rp }}</b></div>
+  {% endfor %}
+  <hr>
+  <div class="row total"><span>TOTAL</span><b>{{ o.total|rp }}</b></div>
+  <p class="center muted">~ Selamat membaca ~</p>
+</div>
+<div class="center no-print">
+  <button class="btn" onclick="window.print()">🖨️ Cetak struk</button>
+  {% if session.admin %}<a class="btn ghost" href="{{ url_for('dashboard') }}">Ke daftar pesanan</a>
+  {% else %}<a class="btn ghost" href="{{ url_for('index') }}">Belanja lagi</a>{% endif %}
+</div>
+{% endblock %}

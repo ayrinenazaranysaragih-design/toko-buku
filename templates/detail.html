@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }}{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Kembali ke katalog</a>
+<div class="detail">
+  <div class="cover big">
+    {% if book.cover %}<img src="{{ url_for('static', filename='uploads/' + book.cover) }}" alt="Sampul {{ book.title }}">
+    {% else %}<span>📕</span>{% endif %}
+  </div>
+  <div class="panel">
+    <h1>{{ book.title }}</h1>
+    <p class="muted">oleh {{ book.author }}</p>
+    <p>{{ book.description }}</p>
+    <p class="price big-price">{{ book.price|rp }}</p>
+    <p class="muted">Stok: {{ book.stock }} buku</p>
+    {% if book.stock > 0 %}
+    <form method="post" action="{{ url_for('cart_add', id=book.id) }}" class="form">
+      <label>Jumlah<input type="number" name="qty" value="1" min="1" max="{{ book.stock }}" required></label>
+      <button class="btn">Masukkan keranjang 🛒</button>
+    </form>
+    {% else %}<p class="empty">Yah, bukunya lagi habis 😢</p>{% endif %}
+  </div>
+</div>
+{% endblock %}
